@@ -54,14 +54,38 @@ Book.prototype.info = function () {
 };
 
 function addBookToLibrary(book) {
-  console.log(book.info());
   if (book instanceof Book) myLibrary.push(book);
-  console.log(myLibrary);
-  return;
+  return displayBooks();
 }
 
 function displayBooks() {
+  bookDisplay.textContent = "";
   for (let book of myLibrary) {
+    let bookCard = document.createElement("div");
+    bookCard.classList.add("book-card");
+
+    let title = document.createElement("p");
+    title.classList.add("book-card-title");
+    title.textContent = `Title: ${book.title}`;
+
+    let author = document.createElement("p");
+    author.classList.add("book-card-author");
+    author.textContent = `Author: ${book.author}`;
+
+    let pages = document.createElement("p");
+    pages.classList.add("book-card-pages");
+    pages.textContent = `# of pages: ${book.pages}`;
+
+    let hasRead = document.createElement("p");
+    hasRead.classList.add("book-card-hasRead");
+    hasRead.textContent = `${book.hasRead}`;
+
+    bookCard.appendChild(title);
+    bookCard.appendChild(author);
+    bookCard.appendChild(pages);
+    bookCard.appendChild(hasRead);
+
+    bookDisplay.appendChild(bookCard);
     // do something with the books...
   }
 }
@@ -70,7 +94,6 @@ function displayForm() {
   bookForm.appendChild(formHtml);
   const submitButton = document.querySelector("#submit-button");
   submitButton.addEventListener("click", submitBook);
-  // submitButton.addEventListener("click", () => (bookForm.textContent = ""));
 }
 
 function submitBook() {
@@ -78,18 +101,14 @@ function submitBook() {
   const author = document.getElementById("author").value;
   const pages = document.getElementById("pages").value;
   const hasRead = document.getElementById("yes").checked;
-  // console.log(
-  //   "author: " +
-  //     author +
-  //     " title: " +
-  //     title +
-  //     " pages: " +
-  //     pages +
-  //     " has read: " +
-  //     hasRead
-  // );
   if (title === "") return alert("title is a required field");
   if (author === "") return alert("author is a required field");
   if (pages === "") return alert("pages is a required field");
   addBookToLibrary(new Book(title, author, pages, hasRead));
+  // reset form...
+  document.getElementById("title").value = "";
+  document.getElementById("author").value = "";
+  document.getElementById("pages").value = "";
+  document.getElementById("yes").checked = true;
+  return (bookForm.textContent = "");
 }
