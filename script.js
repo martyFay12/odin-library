@@ -13,9 +13,8 @@ const formString = `<form>
     </div>
     <div class="form-group">
     <label for="pages">Number of Pages:</label
-    ><input type="number" name="pages" id="pages" required />
+    ><input type="number" name="pages" id="pages" min="1" required />
     </div>
-    <div class="form-group">
     <fieldset>
         <legend>Have you read this?</legend>
         <div class="radio">
@@ -33,7 +32,6 @@ const formString = `<form>
         <label for="no">No</label>
         </div>
     </fieldset>
-    </div>
     <button id="submit-button" type="button">Submit</button>
 </form>`;
 const template = document.createElement("template");
@@ -77,7 +75,7 @@ function displayBooks() {
     pages.textContent = `# of pages: ${book.pages}`;
 
     let hasRead = document.createElement("p");
-    hasRead.classList.add("book-card-hasRead");
+    hasRead.classList.add("book-card-has-read");
     hasRead.textContent = `${book.hasRead}`;
 
     bookCard.appendChild(title);
@@ -103,7 +101,7 @@ function submitBook() {
   const hasRead = document.getElementById("yes").checked;
   if (title === "") return alert("title is a required field");
   if (author === "") return alert("author is a required field");
-  if (pages === "") return alert("pages is a required field");
+  if (pages === "" || pages <= 0) return alert("pages is a required field");
   addBookToLibrary(new Book(title, author, pages, hasRead));
   // reset form...
   document.getElementById("title").value = "";
